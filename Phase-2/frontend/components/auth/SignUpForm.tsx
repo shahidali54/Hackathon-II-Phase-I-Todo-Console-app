@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/Input";
 import { isValidEmail, isValidPassword } from "@/lib/utils";
 
 interface SignUpFormData {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -26,7 +28,7 @@ export function SignUpForm() {
     watch,
     formState: { errors },
   } = useForm<SignUpFormData>({
-    defaultValues: { email: "", password: "", confirmPassword: "" },
+    defaultValues: { firstName: "", lastName: "", email: "", password: "", confirmPassword: "" },
   });
 
   const password = watch("password");
@@ -35,7 +37,7 @@ export function SignUpForm() {
     setSubmitError(null);
     clearError();
     try {
-      await signUp(data.email, data.password);
+      await signUp(data.firstName, data.lastName, data.email, data.password);
       await signIn(data.email, data.password);
       router.push("/dashboard");
     } catch (err) {
@@ -53,6 +55,26 @@ export function SignUpForm() {
           {displayError}
         </div>
       )}
+
+      <Input
+        label="First Name"
+        type="text"
+        placeholder="John"
+        error={errors.firstName?.message}
+        {...register("firstName", {
+          required: "First name is required",
+        })}
+      />
+
+      <Input
+        label="Last Name"
+        type="text"
+        placeholder="Doe"
+        error={errors.lastName?.message}
+        {...register("lastName", {
+          required: "Last name is required",
+        })}
+      />
 
       <Input
         label="Email"
