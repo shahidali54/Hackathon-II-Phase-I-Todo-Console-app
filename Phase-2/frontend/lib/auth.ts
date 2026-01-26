@@ -89,10 +89,10 @@ export async function signIn(email: string, password: string): Promise<SignInRes
 }
 
 
-export async function signUp(email: string, password: string): Promise<SignInResponse> {
+export async function signUp(firstName: string, lastName: string, email: string, password: string): Promise<SignInResponse> {
   const response = await authApiRequest<any>("/api/auth/register", {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ firstName, lastName, email, password }),
   });
 
   if (!response || !response.id || !response.email) throw new Error("Invalid response from server");
